@@ -40,8 +40,32 @@ public class LinRegressionDriver {
 		for(int i=0;i<numStrs.size();i++) {
 			tempStr = numStrs.get(i);
 			String strArray[] = tempStr.split(delimeter);
+			
 			double nums1D[] = new double[strArray.length];
 			for(int j = 0;j<nums1D.length;j++) {
+				System.out.println(strArray[j]);
+				nums1D[j] = Double.valueOf(strArray[j]);
+			}
+			nums2D[i] = nums1D;
+		}
+		
+		return nums2D;
+	}
+	
+	public static double[][] readStrdouble2D(ArrayList<String> numStrs,String delimeter, boolean removeFirst){
+		double[][] nums2D = new double[numStrs.size()][/*(numStrs.get(0).length()+1)/2*/];
+		String tempStr = "";
+		
+		for(int i=0;i<numStrs.size();i++) {
+			tempStr = numStrs.get(i);
+			String strArray[] = tempStr.split(delimeter);
+			
+			double nums1D[] = new double[strArray.length];
+			for(int j = 0;j<nums1D.length;j++) {
+				if(removeFirst && j==0) {
+					continue;
+				}
+				System.out.println(strArray[j]);
 				nums1D[j] = Double.valueOf(strArray[j]);
 			}
 			nums2D[i] = nums1D;
@@ -56,7 +80,7 @@ public class LinRegressionDriver {
 
 	public static double[] removeFirst (double[] data) {
 		double[] newData = new double[data.length-1];
-		for(int i=0; i<data.length;i++) {
+		for(int i=1; i<data.length;i++) {
 			if(i==0) {
 				continue;
 			}
@@ -66,7 +90,7 @@ public class LinRegressionDriver {
 	}
 	
 	public static double[][] removeFirst(double[][] data){
-		double[][] newData = new double[data.length-1][];
+		double[][] newData = new double[data.length][];
 		for(int i=0;i<data.length;i++) {
 			newData[i] = removeFirst(data[i]);
 		}
@@ -74,7 +98,7 @@ public class LinRegressionDriver {
 	}
 	
 	public static double[][] readCSV(String filename) throws IOException,FileNotFoundException{
-		return removeFirst(readStrdouble2D(read(filename,true),","));
+		return removeFirst(readStrdouble2D(read(filename,true),",",true));
 	}
 
 	public static void main(String[] args) throws IOException,FileNotFoundException{
@@ -106,7 +130,7 @@ public class LinRegressionDriver {
 		
 		String cubic_file = "cubic.csv";
 		double[][] cubicData = readCSV(cubic_file);
-		
+		System.out.println(Update.print2D(cubicData));
 	}
 
 }
