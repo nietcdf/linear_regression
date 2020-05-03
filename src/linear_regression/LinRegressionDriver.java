@@ -12,9 +12,16 @@ import java.util.*;
 public class LinRegressionDriver {
 	
 	public static ArrayList<String> read(String filename) throws FileNotFoundException,IOException{
+		return read(filename,false);
+	}
+	
+	public static ArrayList<String> read(String filename, boolean skipFirst) throws FileNotFoundException,IOException{
 		BufferedReader reader = new BufferedReader(new FileReader(filename));
 		ArrayList<String> lines = new ArrayList<String>();
 		String line = "";
+		if(skipFirst) {
+			line=reader.readLine();
+		}
 		while(line!=null) {
 			line = reader.readLine();
 			if(line==null) {
@@ -47,6 +54,28 @@ public class LinRegressionDriver {
 		return readStrdouble2D(read(filename),delimeter);
 	}
 
+	public static double[] removeFirst (double[] data) {
+		double[] newData = new double[data.length-1];
+		for(int i=0; i<data.length;i++) {
+			if(i==0) {
+				continue;
+			}
+			newData[i-1] = data[i];
+		}
+		return newData;
+	}
+	
+	public static double[][] removeFirst(double[][] data){
+		double[][] newData = new double[data.length-1][];
+		for(int i=0;i<data.length;i++) {
+			newData[i] = removeFirst(data[i]);
+		}
+		return newData;
+	}
+	
+	public static double[][] readCSV(String filename) throws IOException,FileNotFoundException{
+		return removeFirst(readStrdouble2D(read(filename,true),","));
+	}
 
 	public static void main(String[] args) throws IOException,FileNotFoundException{
 		// TODO Auto-generated method stub
@@ -74,6 +103,9 @@ public class LinRegressionDriver {
 		System.out.println(linReg.costHistoryStr());
 		System.out.println("ping");
 		System.out.println(linReg.thetaStr());
+		
+		String cubic_file = "cubic.csv";
+		double[][] cubicData = readCSV(cubic_file);
 		
 	}
 

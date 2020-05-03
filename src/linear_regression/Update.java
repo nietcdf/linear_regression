@@ -130,6 +130,40 @@ public class Update {
 		return h-y;
 	}
 	
+	public double predict(double[] x, double[] theta) {
+		double h = 0;
+		for(int i=0; i<x.length;i++) {
+			h += x[i]*theta[i];
+		}
+		return h;
+	}
+	
+	
+	//use x_bias (for single example just have 1 prepended)
+	public double predict(double[] x_bias) {
+		return predict(x_bias,theta);
+	}
+	
+	//x_bias
+	public double[] predict(double[][] x_bias) {
+		double[] h = new double[x_bias.length];
+		for(int i=0; i<h.length;i++) {
+			h[i] = predict(x_bias[i]);
+		}
+		return h;
+		
+	}
+	//calculates the values of the model between max and min for polynomial of degree n
+	public double[] predictPoly(double max, double min, int n, int numPoints) {
+		double[] range = new double[numPoints];
+		for(int i=0; i<numPoints;i++) {
+			range[i] = min + (i*(max-min))/(double)numPoints;
+		}
+		double[][] poly = model(range, numPoints);
+		return predict(insertBias(poly));
+		
+	}
+	
 	//adds a column of 1's to the beggining of the matrix
 	public double[][] insertBias(double[][] x) {
 		double[][] x_bias = new double[x.length][x[0].length+1];
@@ -221,6 +255,29 @@ public class Update {
 	
 	public String costHistoryStr() {
 		return Update.printList(costHistory, "\n");
+	}
+	
+	//model the data as polynomial of degree n
+	public static double[] model(double data,int n) {
+		if(n<=0) {
+			System.out.println("cannot accept value of n <= 0");
+			return new double[0];
+		}
+		else {
+			double[] poly = new double[n];
+			for(int i=0;i<n;i++) {
+				poly[i] = Math.pow(data, i+1);
+			}
+			return poly;
+		}
+	}
+	
+	public static double[][] model(double[] data, int n){
+		double[][] poly = new double[data.length][];
+		for(int i =0; i<data.length;i++) {
+			poly[i] = model(data[i],n);
+		}
+		return poly;
 	}
 
 }
