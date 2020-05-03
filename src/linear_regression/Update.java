@@ -2,6 +2,7 @@ package linear_regression;
 import java.lang.Math;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +19,24 @@ public class Update {
 	int iterations = 1500;
 	ArrayList<Double> costHistory = new ArrayList<>();
 	
+	//filename corresponds to a CSV file in the format output by R, 
+	//the first row is column headers, the first column is row indices
+	public Update(String filename,int n) throws IOException,FileNotFoundException{
+		this(LinRegressionDriver.readCSV(filename),n);
+	}
+	
+	//creates Update object for data and fitting as a n degree polynomial
+	public Update(double[][] data, int n) {
+		double[][] xTerms = Update.splitX(data);
+		double[] yTerms = Update.splitY(data);
+		double[][] polyTerms = Update.model(xTerms, n);
+		this.x = polyTerms;
+		this.y = yTerms;
+		this.x_bias = insertBias(this.x);
+		this.theta = new double[x_bias[0].length];
+		this.m = x.length;
+		
+	}
 	
 	//each row of x should be a training example
 	public Update(double[][] x, double[] y) {
