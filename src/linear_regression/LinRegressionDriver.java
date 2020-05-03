@@ -26,14 +26,14 @@ public class LinRegressionDriver {
 		return lines;
 	}
 	
-	public static Double[][] readStrDouble2D(ArrayList<String> numStrs,String delimeter){
-		Double[][] nums2D = new Double[numStrs.size()][/*(numStrs.get(0).length()+1)/2*/];
+	public static double[][] readStrdouble2D(ArrayList<String> numStrs,String delimeter){
+		double[][] nums2D = new double[numStrs.size()][/*(numStrs.get(0).length()+1)/2*/];
 		String tempStr = "";
 		
 		for(int i=0;i<numStrs.size();i++) {
 			tempStr = numStrs.get(i);
 			String strArray[] = tempStr.split(delimeter);
-			Double nums1D[] = new Double[strArray.length];
+			double nums1D[] = new double[strArray.length];
 			for(int j = 0;j<nums1D.length;j++) {
 				nums1D[j] = Double.valueOf(strArray[j]);
 			}
@@ -43,17 +43,35 @@ public class LinRegressionDriver {
 		return nums2D;
 	}
 	
-	public static Double[][] read2D(String filename,String delimeter) throws IOException,FileNotFoundException{
-		return readStrDouble2D(read(filename),delimeter);
+	public static double[][] read2D(String filename,String delimeter) throws IOException,FileNotFoundException{
+		return readStrdouble2D(read(filename),delimeter);
 	}
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException,FileNotFoundException{
 		// TODO Auto-generated method stub
-		String data_file = "ex1data.txt";
+		String path = "";
+		String data_file = "ex1data1.txt";
+		String data_loc = path+data_file;
+		double[][] data = read2D(data_loc,",");
 		
+		for(double[] d1: data) {
+			System.out.println("hi");
+			for(double d2: d1) {
+				System.out.print(d2+",");
+				
+			}
+		}
+		System.out.println("ping");
+		System.out.println(data[0][0]+","+data[0][1]);
+		System.out.println(data[data.length-1][0]);
 		
-		
+		Update linReg = new Update(data);
+		System.out.println(linReg.xStr());
+		System.out.println(linReg.yStr());
+		System.out.println(linReg.cost());
+		linReg.iterateTheta(5);
+		System.out.println(linReg.costHistoryStr());
 		
 	}
 
