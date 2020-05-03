@@ -42,7 +42,13 @@ public class Update {
 	public void iterateTheta(int iter) {
 		for(int i=0;i<iter;i++) {
 			updateThetas();
+			//System.out.println(i);
+			cost();
 		}
+	}
+	
+	public void iterateTheta() {
+		iterateTheta(iterations);
 	}
 	
 	//Assign y to the last column of the data and x as the rest
@@ -87,9 +93,10 @@ public class Update {
 	}
 	
 	public void updateThetas() {
-		updateThetas(x, y, theta);
+		updateThetas(x_bias, y, theta);
 	}
 	
+	//used x_bias
 	public double[] updateThetaInner(double[] h_minus_y, double[][] x, int thetaIndex) {
 		double[] inner = new double[h_minus_y.length];
 		for(int i=0;i<h_minus_y.length;i++) {
@@ -179,7 +186,7 @@ public class Update {
 	}
 	
 	public static String print1D(double[] data) {
-		return print1D(data,",");
+		return print1D(data,"\n");
 	}
 	
 	public static String print2D(double[][] data) {
@@ -213,7 +220,7 @@ public class Update {
 	}
 	
 	public String costHistoryStr() {
-		return Update.printList(costHistory, ",");
+		return Update.printList(costHistory, "\n");
 	}
 
 }

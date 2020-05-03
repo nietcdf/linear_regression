@@ -70,8 +70,10 @@ public class LinRegressionDriver {
 		System.out.println(linReg.xStr());
 		System.out.println(linReg.yStr());
 		System.out.println(linReg.cost());
-		linReg.iterateTheta(5);
+		linReg.iterateTheta();
 		System.out.println(linReg.costHistoryStr());
+		System.out.println("ping");
+		System.out.println(linReg.thetaStr());
 		
 	}
 
