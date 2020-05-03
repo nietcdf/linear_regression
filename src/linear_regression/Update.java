@@ -18,34 +18,48 @@ import java.util.List;
 
 
 
+/**
+ * @author matthew_welty
+ *
+ */
 public class Update {
 	//cost function for all training examples
 	/**
 	 * each row of x corresponds to 1 training example, so you can have any number of 
-	 * paramaters that you want
-	 * 
+	 * parameters that you want
+	 */
+	double[][] x;
+	
+	/**
 	 * each element of y corresponds to 1 training example
-	 * 
-	 * theta is the array of the fitting paramaters
-	 * 
+	 */
+	double[] y;
+	/**
+	 *  theta is the array of the fitting paramaters
+	 */
+	double[] theta;
+	/**
 	 * alpha is the step size of iterations
-	 * 
+	 */
+	double alpha=.01;
+	/**
 	 * x_bias is the same as the x matrix but with a column of 1's prepended to x,
 	 * so that we can have an intercept term in our fit
-	 * 
+	 */
+	double[][] x_bias;
+	/**
 	 * m is the number of training examples = y.length and x.length
-	 * 
+	 */
+	double m;
+	/**
+	 * number of updates to theta
+	 */
+	int iterations = 1500;
+	/**
 	 * costHistory contains the costFunction history as a function of iteration#, if the 
 	 * fit is going well the cost should decrease with every iteration, if the cost is increasing
 	 * the fit may begin to diverge
 	 */
-	double[][] x;
-	double[] y;
-	double[] theta;
-	double alpha=.01;
-	double[][] x_bias;
-	double m;
-	int iterations = 1500;
 	ArrayList<Double> costHistory = new ArrayList<>();
 	
 	//filename corresponds to a CSV file in the format output by R, 
