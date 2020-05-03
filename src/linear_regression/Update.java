@@ -1,5 +1,9 @@
 package linear_regression;
 import java.lang.Math;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +67,24 @@ public class Update {
 			trans_noY[i] = trans[i];
 		}
 		this.x = Update.transpose(trans_noY);
+	}
+	
+	public static double[][] splitX(double[][] data){
+		double[][] trans = Update.transpose(data);
+		//this.y = trans[trans.length-1];
+		double[][] trans_noY = new double[trans.length-1][trans[0].length];
+		for(int i=0;i<trans.length;i++) {
+			if(i==trans.length-1) {
+				continue;
+			}
+			trans_noY[i] = trans[i];
+		}
+		return Update.transpose(trans_noY);
+	}
+	
+	public static double[] splitY(double[][] data){
+		double[][] trans = Update.transpose(data);		
+		return trans[trans.length-1];
 	}
 	
 	public double cost() {
@@ -236,7 +258,24 @@ public class Update {
 	}
 	
 	public String thetaStr() {
-		return print1D(theta);
+		return print1D(theta,",");
+	}
+	
+	public double[][] append2D(double[][] x, double[] y){
+		double[][] all = new double[x.length][];
+		for(int i=0;i<x.length;i++) {
+			double[] current = new double[x[i].length+1];
+			for(int j=0;j<current.length;j++) {
+				if(j==current.length-1) {
+					current[j] = y[i];
+				}
+				else {
+					current[j] = x[i][j];
+				}
+			}
+			all[i] = current;
+		}
+		return all;
 	}
 	
 	public static <type> String printList(List<type> data, String delimeter){
@@ -278,6 +317,32 @@ public class Update {
 			poly[i] = model(data[i],n);
 		}
 		return poly;
+	}
+	
+	public static double[][] model(double[][] data, int n){
+		return model(transpose(data)[0],n);
+	}
+	
+	public void writeData(String filename) throws IOException{
+		//write x, y, theta on top
+		String thetaStr = thetaStr();
+		String all = print2D(append2D(x, y));
+		String master = thetaStr+"\n"+all;
+		save(filename,master);
+	}
+	
+	public void writePrediction(String filename) throws IOException{
+		String thetaStr = thetaStr();
+		double[] y_out = predict(x_bias);
+		String all = print2D(append2D(x,y_out));
+		String master = thetaStr+"\n"+all;
+		save(filename,master);
+	}
+	
+	public static void save(String filename,String str) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+		writer.write(str);
+		writer.close();
 	}
 
 }

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.*;
+import java.io.*;
 
 
 public class LinRegressionDriver {
@@ -131,6 +132,35 @@ public class LinRegressionDriver {
 		String cubic_file = "cubic.csv";
 		double[][] cubicData = readCSV(cubic_file);
 		System.out.println(Update.print2D(cubicData));
+		double[][] xTerms = Update.splitX(cubicData);
+		System.out.println(Update.print2D(xTerms));
+		
+		double[] yTerms = Update.splitY(cubicData);
+		System.out.println(Update.print1D(yTerms));
+		double[][] polyTerms = Update.model(xTerms,3);
+		Update cubicReg = new Update(polyTerms,yTerms);
+		cubicReg.setAlpha(.0001);
+		cubicReg.setIterations(10000);
+		cubicReg.iterateTheta();
+		System.out.println("ping");
+		System.out.println(cubicReg.thetaStr());
+		System.out.println(cubicReg.costHistoryStr());
+		
+		linReg.writeData("linReg.txt");
+		linReg.writePrediction("linRegPrediction.txt");
+		
+		String outData = "cubicReg.txt";
+		String outPred = "cubicRegPrediction.txt";
+		cubicReg.writeData(outData);
+		cubicReg.writePrediction(outPred);
+		System.out.println(Update.print1D(yTerms));
+		String pythonScript = "./plot.py";
+		String commandStr = pythonScript+" "+outData + " " +outPred;
+		Process process = Runtime.getRuntime().exec(commandStr);
+		
+		//ProcessBuilder py = new ProcessBuilder("touch test_touch.txt");
+		//Process p = py.start();
+		System.out.println(commandStr);
 	}
 
 }
