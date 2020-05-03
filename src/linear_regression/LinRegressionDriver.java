@@ -107,16 +107,6 @@ public class LinRegressionDriver {
 		
 
 		String cubic_file = "cubic.csv";
-		//double[][] cubicData = readCSV(cubic_file);
-		/*
-		double[][] xTerms = Update.splitX(cubicData);
-		double[] yTerms = Update.splitY(cubicData);
-		
-		double[][] polyTerms = Update.model(xTerms,3);
-		*/
-		
-		//Update cubicReg = new Update(polyTerms,yTerms);
-		//Update cubicReg = new Update(cubicData,3);
 		Update cubicReg = new Update(cubic_file,3);
 		cubicReg.setAlpha(.0001);
 		cubicReg.setIterations(10000);
