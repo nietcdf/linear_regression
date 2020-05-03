@@ -1,0 +1,24 @@
+---
+title: "GenerateData"
+author: "Matthew Welty"
+date: "5/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+set.seed(16)
+x = c(-100:100)/25
+n=201
+e_sd = 25
+e = rnorm(n,sd=e_sd)
+y = 3*x^3+2*x^2+x+4+e
+plot(x,y)
+
+df = data.frame(Column1 = x,Column2=y)
+write.csv(df,"cubic.csv")
+```
+
