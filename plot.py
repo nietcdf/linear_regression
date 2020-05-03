@@ -5,7 +5,7 @@ import sys
 import csv
 import numpy as np
 
-print("python code has run")
+
 
 def polyStr(theta,n):
     master = ""
@@ -43,7 +43,7 @@ pred = pred[1:,:]
 pred = pred[pred[:,0].argsort()]
 x_pred = pred[:,0]
 y_pred = pred[:,-1]
-print(y_pred)
+#print(y_pred)
 
 title = "Fitted Equation: " + polyStr(theta,theta.size)
 

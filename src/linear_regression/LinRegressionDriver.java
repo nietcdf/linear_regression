@@ -44,7 +44,7 @@ public class LinRegressionDriver {
 			
 			double nums1D[] = new double[strArray.length];
 			for(int j = 0;j<nums1D.length;j++) {
-				System.out.println(strArray[j]);
+				
 				nums1D[j] = Double.valueOf(strArray[j]);
 			}
 			nums2D[i] = nums1D;
@@ -66,7 +66,7 @@ public class LinRegressionDriver {
 				if(removeFirst && j==0) {
 					continue;
 				}
-				System.out.println(strArray[j]);
+				
 				nums1D[j] = Double.valueOf(strArray[j]);
 			}
 			nums2D[i] = nums1D;
@@ -104,63 +104,28 @@ public class LinRegressionDriver {
 
 	public static void main(String[] args) throws IOException,FileNotFoundException{
 		// TODO Auto-generated method stub
-		String path = "";
-		String data_file = "ex1data1.txt";
-		String data_loc = path+data_file;
-		double[][] data = read2D(data_loc,",");
 		
-		for(double[] d1: data) {
-			System.out.println("hi");
-			for(double d2: d1) {
-				System.out.print(d2+",");
-				
-			}
-		}
-		System.out.println("ping");
-		System.out.println(data[0][0]+","+data[0][1]);
-		System.out.println(data[data.length-1][0]);
-		
-		Update linReg = new Update(data);
-		System.out.println(linReg.xStr());
-		System.out.println(linReg.yStr());
-		System.out.println(linReg.cost());
-		linReg.iterateTheta();
-		System.out.println(linReg.costHistoryStr());
-		System.out.println("ping");
-		System.out.println(linReg.thetaStr());
-		
+
 		String cubic_file = "cubic.csv";
 		double[][] cubicData = readCSV(cubic_file);
-		System.out.println(Update.print2D(cubicData));
 		double[][] xTerms = Update.splitX(cubicData);
-		System.out.println(Update.print2D(xTerms));
-		
 		double[] yTerms = Update.splitY(cubicData);
-		System.out.println(Update.print1D(yTerms));
+		
 		double[][] polyTerms = Update.model(xTerms,3);
 		Update cubicReg = new Update(polyTerms,yTerms);
 		cubicReg.setAlpha(.0001);
 		cubicReg.setIterations(10000);
 		cubicReg.iterateTheta();
-		System.out.println("ping");
-		System.out.println(cubicReg.thetaStr());
-		System.out.println(cubicReg.costHistoryStr());
 		
-		linReg.writeData("linReg.txt");
-		linReg.writePrediction("linRegPrediction.txt");
 		
 		String outData = "cubicReg.txt";
 		String outPred = "cubicRegPrediction.txt";
 		cubicReg.writeData(outData);
 		cubicReg.writePrediction(outPred);
-		System.out.println(Update.print1D(yTerms));
+		
 		String pythonScript = "./plot.py";
 		String commandStr = pythonScript+" "+outData + " " +outPred;
 		Process process = Runtime.getRuntime().exec(commandStr);
-		
-		//ProcessBuilder py = new ProcessBuilder("touch test_touch.txt");
-		//Process p = py.start();
-		System.out.println(commandStr);
 	}
 
 }
